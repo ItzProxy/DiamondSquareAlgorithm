@@ -21,6 +21,7 @@ private:
 	time_t generationSeedValue = time(NULL);
 	bool cornerSet;
 	float arbitraryThreshold = 100.0f;
+	bool DEBUG = false;
 
 	float _threshold = 0.05f; //used for non-whole number comparison
 	/*
@@ -70,6 +71,7 @@ public:
 	*/
 	void setSeed();
 	void setSeed(unsigned int);
+	float getRandVal();
 
 	//probably shouldn't do as it won't be as useful
 
@@ -98,13 +100,16 @@ public:
 		while (step > 1) {
 			displayDiamondSquareArray();
 			float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
+			
+			
 
 			for (int i = 0; i < (int)pow(2, (width - 1) - step); i++) {
 
-				holder.push_back(Point());
+				holder.push_back(Point((int)(width/(int)pow(2,(width-1)-step))+offsetX, (int)(height / 2)+offsetY));
 				//heres where I build the points
 				DiamondMethod(Point((int)(width/2)+offsetX, (int)(height / 2)+offsetY), step, r);
 			}
+			//actually call the square method on each diamond in vector
 			while (!holder.empty()) {
 				Point currPoint = holder.at(0); //use vector like a queue
 				Point yep[4] = {

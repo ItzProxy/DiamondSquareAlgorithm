@@ -15,7 +15,6 @@ void DiamondSquareAlgorithm::SquareMethod(Point point, int step, float randVal)
 	if (step < 1) {
 		return; //only needed for recursive version of DiamondSquare Algorithm
 	}
-	printf("Square: (%d, %d) step: %d r-val: %.3f\n", point.getX(), point.getY(), step, randVal);
 	float sum = 0;
 	int step_changes = (int)(step / 2);
 	//could make it so that the main method can handle this but, hard to make it to a parallel process if sharing the same memory(for access and modification)
@@ -37,7 +36,20 @@ void DiamondSquareAlgorithm::SquareMethod(Point point, int step, float randVal)
 		count++;
 	}
 	diamondSquareArr[point.getX()][point.getY()] = sum / count + randVal;
-	
+	if(DEBUG){
+		printf("Square: (%d, %d) step: %d r-val: %.3f\n", point.getX(), point.getY(), step, randVal);
+		displayDiamondSquareArray();
+	}
+	Point sampleDiamondPoints[4] = { //sample points of the surronding points
+		Point(step_changes*(-1),step_changes*(-1)),
+		Point(step_changes, step_changes*(-1)),
+		Point(step_changes*(-1),step_changes), 
+		Point(step_changes,step_changes) 
+	};
+	//call diamond with the point
+	for(int i = 0; i < 4; i++){ //using this while I figure out a better way
+		DiamondMethod(Point(sampleDiamondPoints[i].getX()+point.getX(),sampleDiamondPoints[i].getY()+point.getY()),(int)step/2,getRandVal());
+	}
 }
 
 void DiamondSquareAlgorithm::DiamondMethod(Point point, int step, float randVal)
@@ -45,10 +57,9 @@ void DiamondSquareAlgorithm::DiamondMethod(Point point, int step, float randVal)
 	if (step < 1) {
 		return; //only needed for recursive version of DiamondSquare Algorithm
 	}
-	printf("Diamond: (%d, %d) step: %d r-val: %.3f\n", point.getX(), point.getY(), step, randVal);
 	float sum = 0;
 	int step_changes = (int)(step / 2);
-	Point samplePoints[4] = {
+	Point samplePoints[4] = { //sample points of the surronding points
 		Point(step_changes*(-1),step_changes*(-1)),
 		Point(step_changes, step_changes*(-1)),
 		Point(step_changes*(-1),step_changes), 
@@ -57,8 +68,21 @@ void DiamondSquareAlgorithm::DiamondMethod(Point point, int step, float randVal)
 	for (int i = 0; i < 4; i++) {
 		sum += diamondSquareArr[point.getX() + samplePoints[i].getX()][point.getY() - samplePoints[i].getY()];
 	}
-	if(diamondSquareArr[point.getX()][point.getY()] < 1)
+	if(diamondSquareArr[point.getX()][point.getY()] < 1) //check for samplePoints out of boundary
 		diamondSquareArr[point.getX()][point.getY()] = (sum/4.0f + randVal);
+	if(DEBUG){
+		printf("Diamond: (%d, %d) step: %d r-val: %.3f\n", point.getX(), point.getY(), step, randVal);
+		displayDiamondSquareArray();
+	}
+	Point sampleSquarePoints[4] = {
+		Point(0,step_changes*(-1)),
+		Point(0,step_changes),
+		Point(step_changes*(-1),0),
+		Point(step_changes,0)
+	};
+	for(int i = 0; i < 4; i++){ //using this while I figure out a better way
+		SquareMethod(Point(sampleSquarePoints[i].getX()+point.getX(),sampleSquarePoints[i].getY()+point.getY()),step,getRandVal());
+	}
 }
 
 void DiamondSquareAlgorithm::DiamondMethod(PointValue* point, int step, float randVal)
@@ -115,12 +139,16 @@ void DiamondSquareAlgorithm::setSeed(unsigned int _seed)
 	generationSeedValue = _seed;
 }
 
+float DiamondSquareAlgorithm::getRandVal(){
+	return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / this->arbitraryThreshold));
+}
+
 void DiamondSquareAlgorithm::generateCorners()
 {
 	srand(generationSeedValue);
 	float corners[4];
 	for (int i = 0; i < 4; i++) {
-		 corners[i] = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / this->arbitraryThreshold));
+		 corners[i] = getRandVal();
 	}
 	generateCorners(corners);
 }
