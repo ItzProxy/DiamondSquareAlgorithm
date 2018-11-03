@@ -8,6 +8,7 @@
 #include <map>
 #include <queue> 
 #include <math.h>
+#include <exception>
 
 #include "PointValue.h"
 #include "CustomException.h"
@@ -97,6 +98,16 @@ public:
 		srand(time(0));
 		int step = width - 1;
 		std::vector<Point> holder;
+		float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
+		DEBUG = true;
+		try {
+			DiamondMethod(startingMidPoint, step, getRandVal());
+		}
+		catch (std::exception ex) {
+			//find us a c++ exception please
+			std::cerr << ex.what() << std::endl;
+		}
+		/*
 		while (step > 1) {
 			displayDiamondSquareArray();
 			float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
@@ -158,7 +169,9 @@ public:
 
 		//}
 		}
+		*/
 	}
+
 
 	/*
 		Purpose: To display the array for debugging purposes

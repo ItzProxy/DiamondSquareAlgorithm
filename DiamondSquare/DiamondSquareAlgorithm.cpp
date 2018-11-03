@@ -48,7 +48,7 @@ void DiamondSquareAlgorithm::SquareMethod(Point point, int step, float randVal)
 	};
 	//call diamond with the point
 	for(int i = 0; i < 4; i++){ //using this while I figure out a better way
-		DiamondMethod(Point(sampleDiamondPoints[i].getX()+point.getX(),sampleDiamondPoints[i].getY()+point.getY()),(int)step/2,getRandVal());
+		DiamondMethod(Point(sampleDiamondPoints[i].getX()+point.getX(),sampleDiamondPoints[i].getY()+point.getY()),(int)(step/2),getRandVal());
 	}
 }
 
@@ -66,7 +66,7 @@ void DiamondSquareAlgorithm::DiamondMethod(Point point, int step, float randVal)
 		Point(step_changes,step_changes) 
 	};
 	for (int i = 0; i < 4; i++) {
-		sum += diamondSquareArr[point.getX() + samplePoints[i].getX()][point.getY() - samplePoints[i].getY()];
+		sum += diamondSquareArr[point.getX() + samplePoints[i].getX()][point.getY() + samplePoints[i].getY()];
 	}
 	if(diamondSquareArr[point.getX()][point.getY()] < 1) //check for samplePoints out of boundary
 		diamondSquareArr[point.getX()][point.getY()] = (sum/4.0f + randVal);
