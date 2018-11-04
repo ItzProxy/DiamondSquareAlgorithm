@@ -10,6 +10,7 @@
 #include <math.h>
 #include <exception>
 
+#include "VectorOverload.h"
 #include "PointValue.h"
 #include "CustomException.h"
 
@@ -29,16 +30,13 @@ private:
 		For each mid point, set the outter edges of the square
 		point = sum(adjacent points) + rand(seed)
 	*/
-	void SquareMethod(int, float);
-	void SquareMethod(Point, int, float);
+	std::vector<Point> SquareMethod(Point, int, float);
 	/*
 		generate a mid point from the corners of the square
 		midPoint = sum(corners) + rand(seed)
 	*/
-	void DiamondMethod(int, float);
-	void DiamondMethod(Point, int, float);
+	std::vector<Point> DiamondMethod(Point, int, float);
 
-	void DiamondMethod(PointValue* corners, int step, float randVal);
 
 
 public:
@@ -97,36 +95,30 @@ public:
 		Point startingMidPoint = Point((int)width / 2, (int)height / 2);
 		srand(time(0));
 		int step = width - 1;
-		std::vector<Point> holder;
+		std::vector<Point> diamondHolder;
+		std::vector<Point> squareHolder;
 		float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
 		DEBUG = true;
-		try {
-			DiamondMethod(startingMidPoint, step, getRandVal());
-		}
-		catch (std::exception ex) {
-			//find us a c++ exception please
-			std::cerr << ex.what() << std::endl;
-		}
-		/*
+
+		diamondHolder.push_back(startingMidPoint);
+		int totalDiamond = 0;
+		int totalSquare = 0;
 		while (step > 1) {
-			displayDiamondSquareArray();
-			float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
+			//displayDiamondSquareArray();
+			//float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
 			
-			
-
-			for (int i = 0; i < (int)pow(2, (width - 1) - step); i++) {
-
-				holder.push_back(Point((int)(width/(int)pow(2,(width-1)-step))+offsetX, (int)(height / 2)+offsetY));
-				//heres where I build the points
-				DiamondMethod(Point((int)(width/2)+offsetX, (int)(height / 2)+offsetY), step, r);
+			while (!diamondHolder.empty()) {
+				squareHolder  = squareHolder + DiamondMethod(diamondHolder.back(), step, getRandVal());
+				diamondHolder.pop_back();//erase this point 
+				totalDiamond++;
 			}
-			//actually call the square method on each diamond in vector
-			while (!holder.empty()) {
-				Point currPoint = holder.at(0); //use vector like a queue
-				Point yep[4] = {
-					Point()
-				}
+			while (!squareHolder.empty()) {
+				diamondHolder = diamondHolder + SquareMethod(squareHolder.back(), step, getRandVal());
+				squareHolder.pop_back();
+				totalSquare++;
 			}
+			step = (int)(step / 2);
+			/*
 			displayDiamondSquareArray();
 			SquareMethod(Point(0, 2), step, r);
 			SquareMethod(Point(2, 0), step, r);
@@ -166,12 +158,11 @@ public:
 			SquareMethod(Point(3, 4), step / 2, r); //(x,y+1)
 			SquareMethod(Point(4, 3), step / 2, r); //(x+1,y)
 			//displayDiamondSquareArray();
-
-		//}
+			*/
+			printf("Total diamond %i\nTotal square %i\n", totalDiamond, totalSquare);
 		}
-		*/
 	}
-
+	
 
 	/*
 		Purpose: To display the array for debugging purposes

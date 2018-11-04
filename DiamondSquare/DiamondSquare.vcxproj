@@ -108,7 +108,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Dionne\Source\Repos\DiamondSquare\DiamondSquare\Dependancies\glew;C:\Users\Dionne\Source\Repos\DiamondSquare\DiamondSquare\Dependancies\free;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\allur\source\repos\ItzProxy\DiamondSquareAlgorithm\DiamondSquare\Dependancies\glew;C:\Users\allur\source\repos\ItzProxy\DiamondSquareAlgorithm\DiamondSquare\Dependancies\free;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -157,6 +157,7 @@
     <ClInclude Include="sleep.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="VectorOverload.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DiamondSquare.cpp" />
