@@ -24,18 +24,20 @@ private:
 	bool cornerSet;
 	float arbitraryThreshold = 100.0f;
 	bool DEBUG = false;
+	std::vector<Point> diamondHolder;
+	std::vector<Point> squareHolder;
 
-	float _threshold = 0.05f; //used for non-whole number comparison
+	float _threshold = 0.005f; //used for non-whole number comparison
 	/*
 		For each mid point, set the outter edges of the square
 		point = sum(adjacent points) + rand(seed)
 	*/
-	std::vector<Point> SquareMethod(Point, int, float);
+	void SquareMethod(const Point, const int, const float);
 	/*
 		generate a mid point from the corners of the square
 		midPoint = sum(corners) + rand(seed)
 	*/
-	std::vector<Point> DiamondMethod(Point, int, float);
+	void DiamondMethod(const Point, const int, const float);
 
 
 
@@ -95,71 +97,29 @@ public:
 		Point startingMidPoint = Point((int)width / 2, (int)height / 2);
 		srand(time(0));
 		int step = width - 1;
-		std::vector<Point> diamondHolder;
-		std::vector<Point> squareHolder;
-		float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
-		DEBUG = true;
+
+		//float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
+		DEBUG = false;
 
 		diamondHolder.push_back(startingMidPoint);
-		int totalDiamond = 0;
-		int totalSquare = 0;
 		while (step > 1) {
 			//displayDiamondSquareArray();
 			//float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
-			
+			int totalDiamond = 0;
+			int totalSquare = 0;
 			while (!diamondHolder.empty()) {
-				squareHolder  = squareHolder + DiamondMethod(diamondHolder.back(), step, getRandVal());
+				DiamondMethod(diamondHolder.back(), step, getRandVal());
 				diamondHolder.pop_back();//erase this point 
 				totalDiamond++;
 			}
 			while (!squareHolder.empty()) {
-				diamondHolder = diamondHolder + SquareMethod(squareHolder.back(), step, getRandVal());
+				SquareMethod(squareHolder.back(), step, getRandVal());
 				squareHolder.pop_back();
 				totalSquare++;
 			}
+			printf("Total diamond %i\nTotal square %i\n step: %i\n", totalDiamond, totalSquare,step);
 			step = (int)(step / 2);
-			/*
-			displayDiamondSquareArray();
-			SquareMethod(Point(0, 2), step, r);
-			SquareMethod(Point(2, 0), step, r);
-			SquareMethod(Point(4, 2), step, r);
-			SquareMethod(Point(2, 4), step, r);
-			displayDiamondSquareArray();
-			//r = 10.0f;
-			//DiamondMethod(Point((int)(width / 2), (int)(height / 2)), step, r);
-			//from point (2,2)
-			DiamondMethod(Point(1, 1), step / 2, r); //(x-1,y-1)
-			DiamondMethod(Point(1, 3), step / 2, r); //(x,y+1)
-			DiamondMethod(Point(3, 1), step / 2, r); //(x+1,y)
-			DiamondMethod(Point(3, 3), step / 2, r); //(x+1,y+1)
-			displayDiamondSquareArray();
-			//for point (1,1)
-			SquareMethod(Point(1, 0), step / 2, r);
-			SquareMethod(Point(0, 1), step / 2, r);
-			SquareMethod(Point(1, 2), step / 2, r);
-			SquareMethod(Point(2, 1), step / 2, r);
-			displayDiamondSquareArray();
-			//for point (1,3)
-			SquareMethod(Point(1, 2), step / 2, r);
-			SquareMethod(Point(0, 3), step / 2, r);
-			SquareMethod(Point(1, 4), step / 2, r);
-			SquareMethod(Point(2, 3), step / 2, r);
-			displayDiamondSquareArray();
-			//for point (3,1)
-			SquareMethod(Point(3, 0), step / 2, r); //(x,y-1)
-			SquareMethod(Point(2, 1), step / 2, r); //(x-1, y)
-			SquareMethod(Point(3, 2), step / 2, r); //(x,y+1)
-			SquareMethod(Point(4, 1), step / 2, r); //(x+1,y)
-			displayDiamondSquareArray();
-			//for point (3,3)
-
-			SquareMethod(Point(3, 2), step / 2, r); //(x,y-1)
-			SquareMethod(Point(2, 3), step / 2, r); //(x-1, y)
-			SquareMethod(Point(3, 4), step / 2, r); //(x,y+1)
-			SquareMethod(Point(4, 3), step / 2, r); //(x+1,y)
-			//displayDiamondSquareArray();
-			*/
-			printf("Total diamond %i\nTotal square %i\n", totalDiamond, totalSquare);
+			
 		}
 	}
 	

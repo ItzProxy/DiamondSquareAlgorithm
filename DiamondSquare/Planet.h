@@ -1,8 +1,8 @@
 #pragma once
-#include "stdafx.h";
+
 #ifndef __PLANET_H_
 #define __PLANET_H_
-
+#include "stdafx.h";
 class Planet {
 private:
 

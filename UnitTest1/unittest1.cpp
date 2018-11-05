@@ -46,6 +46,5 @@ namespace UnitTest1
 	};
 
 	TEST_CLASS(DiamondSquareMethod) {
-		TEST_METHOD()
 	};
 }

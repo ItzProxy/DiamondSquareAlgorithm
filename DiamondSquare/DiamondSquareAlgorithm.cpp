@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "DiamondSquareAlgorithm.h"
 
-std::vector<Point> DiamondSquareAlgorithm::SquareMethod(Point point, int step, float randVal)
+void DiamondSquareAlgorithm::SquareMethod(const Point point, const int step, const float randVal)
 {
 	/*
 	if (step < 1) {
@@ -34,32 +34,25 @@ std::vector<Point> DiamondSquareAlgorithm::SquareMethod(Point point, int step, f
 		displayDiamondSquareArray();
 	}
 	step_changes = (int)step_changes / 2;
-	if (step_changes < 1) {
-		return {};
-	}
 	Point sampleDiamondPoints[4] = { //sample points of the surronding points
 		Point(step_changes*(-1),step_changes*(-1)),
 		Point(step_changes, step_changes*(-1)),
 		Point(step_changes*(-1),step_changes),
 		Point(step_changes,step_changes)
 	};
-	//call diamond with the point
-	std::vector<Point> nextMidPoints;
+	//set the next points for the diamond mthod
 	for (int i = 0; i < 4; i++) { //using this while I figure out a better way
-		nextMidPoints.push_back(Point(sampleDiamondPoints[i].getX() + point.getX(), sampleDiamondPoints[i].getY() + point.getY()));
+		diamondHolder.push_back(Point(sampleDiamondPoints[i].getX() + point.getX(), sampleDiamondPoints[i].getY() + point.getY()));
 	}
-	return nextMidPoints;
 }
 
-std::vector<Point> DiamondSquareAlgorithm::DiamondMethod(Point point, int step, float randVal)
+void DiamondSquareAlgorithm::DiamondMethod(const Point point, const int step, const float randVal)
 {
 	/*
-	if (step < 1) {
-		return {}; //only needed for recursive version of DiamondSquare Algorithm
-	}
+		if the point is out of bound then return back to original function
 	*/
 	if (point.getX() < 0 || point.getX() >= width || point.getY() < 0 || point.getY() >= height) {
-		return {}; 
+		return;
 	}
 	float sum = 0;
 	int step_changes = (int)(step / 2);
@@ -70,6 +63,7 @@ std::vector<Point> DiamondSquareAlgorithm::DiamondMethod(Point point, int step, 
 		Point(step_changes,step_changes)
 	};
 	int count = 0;
+	//get all the surronding radius points given step_changes
 	for (int i = 0; i < 4; i++) {
 		if (samplePoints[i].getX() + point.getX() < 0
 			|| samplePoints[i].getX() + point.getX() >= this->width
@@ -80,7 +74,7 @@ std::vector<Point> DiamondSquareAlgorithm::DiamondMethod(Point point, int step, 
 		sum += diamondSquareArr[point.getX() + samplePoints[i].getX()][point.getY() + samplePoints[i].getY()];
 		count++;
 	}
-	if (diamondSquareArr[point.getX()][point.getY()]) //check
+	if (diamondSquareArr[point.getX()][point.getY()] < _threshold) //check if the index is empty
 		diamondSquareArr[point.getX()][point.getY()] = (sum / count + randVal);
 	if (DEBUG) {
 		printf("Diamond: (%d, %d) step: %d r-val: %.3f\n", point.getX(), point.getY(), step, randVal);
@@ -93,11 +87,9 @@ std::vector<Point> DiamondSquareAlgorithm::DiamondMethod(Point point, int step, 
 		Point(step_changes,0)
 	};
 	//call diamond with the point
-	std::vector<Point> nextCorners;
 	for (int i = 0; i < 4; i++) { //using this while I figure out a better way
-		nextCorners.push_back(Point(sampleSquarePoints[i].getX() + point.getX(), sampleSquarePoints[i].getY() + point.getY()));
+		squareHolder.push_back(Point(sampleSquarePoints[i].getX() + point.getX(), sampleSquarePoints[i].getY() + point.getY()));
 	}
-	return nextCorners;
 }
 
 //constructor
