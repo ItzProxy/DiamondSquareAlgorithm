@@ -19,7 +19,7 @@ void DiamondSquareAlgorithm::SquareMethod(const Point point, const int step, con
 	};
 	int count = 0;//keep track if it took 3 points(aka, one is out of bound) or 4 (no points out of bound)
 	for (int i = 0; i < 4; i++) {
-		if (samplePoints[i].getX() + point.getX() < 0
+		if (samplePoints[i].getX() + point.getX() < 0 //boundary
 			|| samplePoints[i].getX() + point.getX() >= this->width
 			|| samplePoints[i].getY() + point.getY() >= this->height
 			|| samplePoints[i].getY() + point.getY() < 0) {
@@ -43,6 +43,40 @@ void DiamondSquareAlgorithm::SquareMethod(const Point point, const int step, con
 	//set the next points for the diamond mthod
 	for (int i = 0; i < 4; i++) { //using this while I figure out a better way
 		diamondHolder.push_back(Point(sampleDiamondPoints[i].getX() + point.getX(), sampleDiamondPoints[i].getY() + point.getY()));
+	}
+}
+
+void DiamondSquareAlgorithm::SquareMethod(const int x, const int y, const int step, const float randVal)
+{
+	/*
+	if (step < 1) {
+	return {}; //only needed for recursive version of DiamondSquare Algorithm
+	}
+	*/
+	float sum = 0;
+	int step_changes = (int)(step / 2);
+	//could make it so that the main method can handle this but, hard to make it to a parallel process if sharing the same memory(for access and modification)
+	Point samplePoints[4] = {
+		Point(0,step_changes*(-1)),
+		Point(0,step_changes),
+		Point(step_changes*(-1),0),
+		Point(step_changes,0)
+	};
+	int count = 0;//keep track if it took 3 points(aka, one is out of bound) or 4 (no points out of bound)
+	for (int i = 0; i < 4; i++) {
+		if (samplePoints[i].getX() + x < 0 //boundary
+			|| samplePoints[i].getX() + x >= this->width
+			|| samplePoints[i].getY() + y >= this->height
+			|| samplePoints[i].getY() + y < 0) {
+			continue;
+		}
+		sum += diamondSquareArr[samplePoints[i].getX() + x][samplePoints[i].getY() + y];
+		count++;
+	}
+	diamondSquareArr[x][y] = sum / count + randVal;
+	if (DEBUG) {
+		printf("Square: (%d, %d) step: %d r-val: %.3f\n", x, y, step, randVal);
+		displayDiamondSquareArray();
 	}
 }
 
@@ -89,6 +123,42 @@ void DiamondSquareAlgorithm::DiamondMethod(const Point point, const int step, co
 	//call diamond with the point
 	for (int i = 0; i < 4; i++) { //using this while I figure out a better way
 		squareHolder.push_back(Point(sampleSquarePoints[i].getX() + point.getX(), sampleSquarePoints[i].getY() + point.getY()));
+	}
+}
+
+void DiamondSquareAlgorithm::DiamondMethod(const int x, const int y, const int step, const float randVal)
+{
+	/*
+	if the point is out of bound then return back to original function
+	*/
+	if (x < 0 || y >= width || x < 0 || y >= height) {
+		return;
+	}
+	float sum = 0;
+	int step_changes = (int)(step / 2);
+	Point samplePoints[4] = { //sample points of the surronding points
+		Point(step_changes*(-1),step_changes*(-1)),
+		Point(step_changes, step_changes*(-1)),
+		Point(step_changes*(-1),step_changes),
+		Point(step_changes,step_changes)
+	};
+	int count = 0;
+	//get all the surronding radius points given step_changes
+	for (int i = 0; i < 4; i++) { //boundaries
+		if (samplePoints[i].getX() + x < 0
+			|| samplePoints[i].getX() + x >= this->width
+			|| samplePoints[i].getY() + y >= this->height
+			|| samplePoints[i].getY() + y < 0) {
+			continue;
+		}
+		sum += diamondSquareArr[x + samplePoints[i].getX()][y + samplePoints[i].getY()];
+		count++;
+	}
+	if (diamondSquareArr[x][y] < _threshold) //check if the index is empty
+		diamondSquareArr[x][y] = (sum / count) + randVal;
+	if (DEBUG) {
+		printf("Diamond: (%d, %d) step: %d r-val: %.3f\n", x, y, step, randVal);
+		displayDiamondSquareArray();
 	}
 }
 

@@ -33,11 +33,13 @@ private:
 		point = sum(adjacent points) + rand(seed)
 	*/
 	void SquareMethod(const Point, const int, const float);
+	void SquareMethod(const int, const int, const int, const float);
 	/*
 		generate a mid point from the corners of the square
 		midPoint = sum(corners) + rand(seed)
 	*/
 	void DiamondMethod(const Point, const int, const float);
+	void DiamondMethod(const int, const int, const int, const float);
 
 
 
@@ -99,14 +101,45 @@ public:
 		int step = width - 1;
 
 		//float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
-		DEBUG = false;
+		DEBUG = true;
 
-		diamondHolder.push_back(startingMidPoint);
+		while (step > 1) {
+
+			//diamond method calling
+			Point offset;
+				for (int i = (int)step / 2; i < step; i += (int)(step / 2)) {
+					for (int j = (int)step / 2; j < step; j += (int)(step / 2)) {
+						int a = i + offset.getX();
+						int b = j + offset.getY();
+						DiamondMethod(a, b, step, getRandVal());
+						float yep = getRandVal();
+						SquareMethod(a + (int)step / 2, b,step, yep);
+					
+						SquareMethod(a, b + (int)step / 2,step, yep);
+					
+						SquareMethod(a - (int)step / 2, b, step, yep);
+					
+						SquareMethod(a, b - (int)step / 2, step, yep);
+					}
+				}
+			/*
+			for (int i = 0; i < width; i += (int)(step / 2)) {
+				for (int j = 0; j < height; j += (int)(step / 2)) {
+					SquareMethod(i, j, step, getRandVal());
+				}
+			}
+			*/
+			step = (int)(step / 2);
+		}
+
+		/*
 		while (step > 1) {
 			//displayDiamondSquareArray();
 			//float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
 			int totalDiamond = 0;
 			int totalSquare = 0;
+			for(int i = 0; i < step; i+= (int)step/2)
+				
 			while (!diamondHolder.empty()) {
 				DiamondMethod(diamondHolder.back(), step, getRandVal());
 				diamondHolder.pop_back();//erase this point 
@@ -121,6 +154,7 @@ public:
 			step = (int)(step / 2);
 			
 		}
+		*/
 	}
 	
 
