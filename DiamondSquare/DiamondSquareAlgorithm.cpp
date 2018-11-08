@@ -56,7 +56,7 @@ void DiamondSquareAlgorithm::SquareMethod(const int x, const int y, const int st
 	if (x < 0 || x >= width || y < 0 || y >= height)
 		return;
 	float sum = 0;
-	int step_changes = (int)(step / 2);
+	int step_changes = step;
 	//could make it so that the main method can handle this but, hard to make it to a parallel process if sharing the same memory(for access and modification)
 	Point samplePoints[4] = {
 		Point(0,step_changes*(-1)),
@@ -64,7 +64,7 @@ void DiamondSquareAlgorithm::SquareMethod(const int x, const int y, const int st
 		Point(step_changes*(-1),0),
 		Point(step_changes,0)
 	};
-	int count = 0;//keep track if it took 3 points(aka, one is out of bound) or 4 (no points out of bound)
+	int count = 1;//keep track if it took 3 points(aka, one is out of bound) or 4 (no points out of bound)
 	for (int i = 0; i < 4; i++) {
 		if (samplePoints[i].getX() + x < 0 //boundary
 			|| samplePoints[i].getX() + x >= this->width
@@ -137,7 +137,7 @@ void DiamondSquareAlgorithm::DiamondMethod(const int x, const int y, const int s
 		return;
 	}
 	float sum = 0;
-	int step_changes = (int)(step / 2);
+	int step_changes = step;
 	Point samplePoints[4] = { //sample points of the surronding points
 		Point(step_changes*(-1),step_changes*(-1)),
 		Point(step_changes, step_changes*(-1)),
