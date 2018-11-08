@@ -53,6 +53,8 @@ void DiamondSquareAlgorithm::SquareMethod(const int x, const int y, const int st
 	return {}; //only needed for recursive version of DiamondSquare Algorithm
 	}
 	*/
+	if (x < 0 || x >= width || y < 0 || y >= height)
+		return;
 	float sum = 0;
 	int step_changes = (int)(step / 2);
 	//could make it so that the main method can handle this but, hard to make it to a parallel process if sharing the same memory(for access and modification)
@@ -76,7 +78,7 @@ void DiamondSquareAlgorithm::SquareMethod(const int x, const int y, const int st
 	diamondSquareArr[x][y] = sum / count + randVal;
 	if (DEBUG) {
 		printf("Square: (%d, %d) step: %d r-val: %.3f\n", x, y, step, randVal);
-		displayDiamondSquareArray();
+		//displayDiamondSquareArray();
 	}
 }
 
@@ -158,7 +160,7 @@ void DiamondSquareAlgorithm::DiamondMethod(const int x, const int y, const int s
 		diamondSquareArr[x][y] = (sum / count) + randVal;
 	if (DEBUG) {
 		printf("Diamond: (%d, %d) step: %d r-val: %.3f\n", x, y, step, randVal);
-		displayDiamondSquareArray();
+		//displayDiamondSquareArray();
 	}
 }
 
