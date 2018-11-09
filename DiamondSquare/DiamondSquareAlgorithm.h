@@ -96,22 +96,23 @@ public:
 	//main method
 	void otherDiamondSquare(int step) {
 		int x, y;
-		int halfStep = (int)(step / 2);
-		DEBUG = false;
-		if (halfStep < 1)
-			return;
-		for (y = halfStep; y < height-1; y += step) {
-			for (x = halfStep; x < width-1; x += step) {
-				float yep = getRandVal();
-				DiamondMethod(x, y, halfStep, yep);
-				SquareMethod(x + (int)step / 2,y, step, yep);
-				SquareMethod(x, y + (int)step / 2, step, yep);
-				SquareMethod(x - (int)step / 2, y, step, yep);
-				SquareMethod(x, y - (int)step / 2, step, yep);
-			}
-		}
+		DEBUG = true;
 
-		otherDiamondSquare((int)(step / 2));
+		while (step > 1) {
+			int halfStep = (int)(step / 2);
+			for (y = halfStep; y < height - 1; y += step) {
+				for (x = halfStep; x < width - 1; x += step) {
+					float yep = getRandVal();
+					DiamondMethod(x, y, halfStep, yep);
+					SquareMethod(x + (int)step / 2, y, step, yep);
+					SquareMethod(x, y + (int)step / 2, step, yep);
+					SquareMethod(x - (int)step / 2, y, step, yep);
+					SquareMethod(x, y - (int)step / 2, step, yep);
+				}
+			}
+			step = (int)(step / 2);
+		}
+		//otherDiamondSquare((int)(step / 2));
 	}
 	void diamondSquare() {
 		generateCorners();
