@@ -27,7 +27,7 @@ private:
 	std::vector<Point> diamondHolder;
 	std::vector<Point> squareHolder;
 
-	float _threshold = 0.005f; //used for non-whole number comparison
+	float _threshold = 0.0005f; //used for non-whole number comparison
 	/*
 		For each mid point, set the outter edges of the square
 		point = sum(adjacent points) + rand(seed)
@@ -155,45 +155,12 @@ public:
 				step = (int)(step / 2);
 			}
 		}
-		/*
-		for (int i = 0; i < width; i += (int)(step / 2)) {
-			for (int j = 0; j < height; j += (int)(step / 2)) {
-				SquareMethod(i, j, step, getRandVal());
-			}
-		}
-		*/
 	}
-
-	/*
-	while (step > 1) {
-		//displayDiamondSquareArray();
-		//float r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX));
-		int totalDiamond = 0;
-		int totalSquare = 0;
-		for(int i = 0; i < step; i+= (int)step/2)
-
-		while (!diamondHolder.empty()) {
-			DiamondMethod(diamondHolder.back(), step, getRandVal());
-			diamondHolder.pop_back();//erase this point
-			totalDiamond++;
-		}
-		while (!squareHolder.empty()) {
-			SquareMethod(squareHolder.back(), step, getRandVal());
-			squareHolder.pop_back();
-			totalSquare++;
-		}
-		printf("Total diamond %i\nTotal square %i\n step: %i\n", totalDiamond, totalSquare,step);
-		step = (int)(step / 2);
-
-	}
-	*/
-
 	/*
 		Purpose: To display the array for debugging purposes
 	*/
 	void displayDiamondSquareArray();
-
-
+	void normalizeArray();
 };
 
 #endif // !__DIAMONDSQUAREALGORITHM_H_

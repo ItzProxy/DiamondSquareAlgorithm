@@ -243,4 +243,21 @@ void DiamondSquareAlgorithm::displayDiamondSquareArray()
 	}
 }
 
+void DiamondSquareAlgorithm::normalizeArray()
+{
+	//find max value, and use that as the value to normalize the rest of the values of the array
+	float max = diamondSquareArr[0][0];
+	for (int i = 0; i < width; ++i)
+		for (int j = 0; j < height; j++)
+		{
+			if (diamondSquareArr[i][j] > max) {
+				max = diamondSquareArr[i][j];
+			}
+		}
+
+	for (int i = 0; i < width; ++i)
+		for (int j = 0; j < height; j++)
+			diamondSquareArr[i][j] /= max;
+}
+
 
